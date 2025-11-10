@@ -27,7 +27,7 @@ Plataforma inovadora de gerenciamento e consultoria desenvolvida com React, Type
 
 ```bash
 # Clone o repositório
-git clone https://github.com/JotaDiasDevs/Challenge-Sprint-4---FrontEnd.git
+git clone https://github.com/Summit-Consulting/Challenge-Sprint-4-FrontEnd.git
 
 # Entre no diretório
 cd Challenge-Sprint-4---FrontEnd
@@ -155,7 +155,7 @@ O projeto está configurado para deploy na Vercel. O arquivo `vercel.json` cont�
 
 **URL do Deploy:**
 ```
-[Adicionar URL do Vercel após o deploy]
+https://challengesprint4-git-main-joaos-projects-3f61ba05.vercel.app?_vercel_share=OBZgjp3rZwgekzdOrt9wecaa5D1Ubprd
 ```
 
 ### Variáveis de Ambiente
@@ -168,11 +168,11 @@ VITE_API_TIMEOUT=10000
 ## 🔗 Links
 
 ### 📚 Repositório GitHub
-🔗 [https://github.com/JotaDiasDevs/Challenge-Sprint-4---FrontEnd](https://github.com/JotaDiasDevs/Challenge-Sprint-4---FrontEnd)
+🔗 [https://github.com/Summit-Consulting/Challenge-Sprint-4-FrontEnd]
 
 
 ### 🌐 Deploy Vercel
-🔗 [Adicionar URL do Vercel após o deploy]
+🔗 https://challengesprint4-git-main-joaos-projects-3f61ba05.vercel.app?_vercel_share=OBZgjp3rZwgekzdOrt9wecaa5D1Ubprd
 
 ## 📝 Versionamento
 
