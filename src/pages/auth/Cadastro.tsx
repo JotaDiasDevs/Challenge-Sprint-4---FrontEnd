@@ -16,6 +16,7 @@ const Acessar: React.FC = () => {
   const { login } = useAuth()
   const [erro, setErro] = React.useState('')
   const [carregando, setCarregando] = React.useState(false)
+  const [errosCampo, setErrosCampo] = React.useState<Partial<Record<keyof AcessoFormData, string>>>({})
   const [formData, setFormData] = React.useState<AcessoFormData>({
     nomeUsuario: '',
     email: '',
@@ -23,22 +24,60 @@ const Acessar: React.FC = () => {
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     })
+    // Limpa erro do campo quando o usuário começa a digitar
+    if (errosCampo[name as keyof AcessoFormData]) {
+      setErrosCampo({
+        ...errosCampo,
+        [name]: undefined,
+      })
+    }
+    // Limpa erro geral
+    if (erro) {
+      setErro('')
+    }
   }
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
       setErro('')
+      
+      // Validações
+      const novosErros: Partial<Record<keyof AcessoFormData, string>> = {}
+      
+      if (!formData.nomeUsuario.trim()) {
+        novosErros.nomeUsuario = 'Nome de usuário é obrigatório.'
+      }
+      
+      if (!formData.email.trim()) {
+        novosErros.email = 'Email é obrigatório.'
+      }
+      
+      if (!formData.senha.trim()) {
+        novosErros.senha = 'Senha é obrigatória.'
+      } else if (formData.senha.length < 6) {
+        novosErros.senha = 'A senha deve ter no mínimo 6 caracteres.'
+      }
+      
+      if (Object.keys(novosErros).length > 0) {
+        setErrosCampo(novosErros)
+        setErro('Por favor, preencha todos os campos corretamente.')
+        return
+      }
+      
+      setErrosCampo({})
+      
       setCarregando(true)
       
       // Prepara os dados para acesso
       const dadosAcesso = {
-        nomeUsuario: formData.nomeUsuario,
-        email: formData.email,
+        nomeUsuario: formData.nomeUsuario.trim(),
+        email: formData.email.trim(),
         senha: formData.senha,
       }
 
@@ -126,8 +165,15 @@ const Acessar: React.FC = () => {
               value={formData.nomeUsuario}
               onChange={handleChange}
               placeholder="Seu nome de usuário"
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+              className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 ${
+                errosCampo.nomeUsuario 
+                  ? 'border-red-500 focus:ring-red-500' 
+                  : 'focus:ring-green-600'
+              }`}
             />
+            {errosCampo.nomeUsuario && (
+              <p className="mt-1 text-sm text-red-600">{errosCampo.nomeUsuario}</p>
+            )}
           </div>
 
           <div>
@@ -138,8 +184,15 @@ const Acessar: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="seu@email.com"
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+              className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 ${
+                errosCampo.email 
+                  ? 'border-red-500 focus:ring-red-500' 
+                  : 'focus:ring-green-600'
+              }`}
             />
+            {errosCampo.email && (
+              <p className="mt-1 text-sm text-red-600">{errosCampo.email}</p>
+            )}
           </div>
 
           <div>
@@ -149,9 +202,21 @@ const Acessar: React.FC = () => {
               type="password"
               value={formData.senha}
               onChange={handleChange}
-              placeholder="Sua senha"
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+              placeholder="Mínimo 6 caracteres"
+              className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 ${
+                errosCampo.senha 
+                  ? 'border-red-500 focus:ring-red-500' 
+                  : 'focus:ring-green-600'
+              }`}
             />
+            {errosCampo.senha && (
+              <p className="mt-1 text-sm text-red-600">{errosCampo.senha}</p>
+            )}
+            {!errosCampo.senha && formData.senha.length > 0 && formData.senha.length < 6 && (
+              <p className="mt-1 text-sm text-yellow-600">
+                A senha deve ter no mínimo 6 caracteres ({formData.senha.length}/6)
+              </p>
+            )}
           </div>
 
           <button
